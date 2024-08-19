@@ -14,7 +14,14 @@ const Login = () => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
-    loginUser(email, password).then().catch();
+    loginUser(email, password)
+      .then(() => {
+        toast.success("Login Success");
+        navigate(from);
+      })
+      .catch((err) => {
+        toast.error("Please Enter A Valid Email And Password");
+      });
   };
   const handleGoogleLogin = (e) => {};
   return (

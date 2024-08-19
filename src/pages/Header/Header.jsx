@@ -1,7 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { AuthContext } from "../../Components/AuthProvider/AuthProvider";
 
 const Header = () => {
+  const { user, logOut } = useContext(AuthContext);
+
+  const handleLogOut = () => {
+    logOut()
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const navLinks = (
     <>
       <li>
@@ -70,38 +82,43 @@ const Header = () => {
           </ul>
         </div>
         <div className="navbar-end">
-          <div>
-            <NavLink to="/login">
-              <button className="font-semibold bg-gray-200 py-2 rounded-md px-4">
-                Login
-              </button>
-            </NavLink>
-          </div>
-          <div className="dropdown dropdown-end hidden">
-            <div
-              tabIndex={0}
-              role="button"
-              className="btn btn-ghost btn-circle avatar"
-            >
-              <div className="w-10 rounded-full">
-                <img
-                  alt="Tailwind CSS Navbar component"
-                  src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                />
+          {user ? (
+            <div className="dropdown dropdown-end">
+              <div
+                tabIndex={0}
+                role="button"
+                className="btn btn-ghost btn-circle avatar"
+              >
+                <div className="w-10 rounded-full">
+                  <img
+                    alt="Tailwind CSS Navbar component"
+                    src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                  />
+                </div>
               </div>
+              <ul
+                tabIndex={0}
+                className="menu menu-sm dropdown-content bg-base-100 font-semibold rounded-box z-[1] mt-3 w-52 p-2 shadow"
+              >
+                <li>
+                  <a>{user?.displayName}</a>
+                </li>
+                <li>
+                  <a>
+                    <button onClick={handleLogOut}>Logout</button>
+                  </a>
+                </li>
+              </ul>
             </div>
-            <ul
-              tabIndex={0}
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
-            >
-              <li>
-                <a>Tofazzal Hossain</a>
-              </li>
-              <li>
-                <a>Logout</a>
-              </li>
-            </ul>
-          </div>
+          ) : (
+            <div>
+              <NavLink to="/login">
+                <button className="font-semibold bg-gray-200 py-2 rounded-md px-4">
+                  Login
+                </button>
+              </NavLink>
+            </div>
+          )}
         </div>
       </div>
     </div>

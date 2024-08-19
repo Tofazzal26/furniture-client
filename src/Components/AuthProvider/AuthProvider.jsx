@@ -4,6 +4,7 @@ import {
   createUserWithEmailAndPassword,
   updateProfile,
   signInWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
 import auth from "./../../Firebase/firebase.config";
 export const AuthContext = createContext();
@@ -38,6 +39,10 @@ const AuthProvider = ({ children }) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
 
+  const logOut = () => {
+    return signOut(auth);
+  };
+
   const userInfo = {
     user,
     notLoading,
@@ -48,6 +53,7 @@ const AuthProvider = ({ children }) => {
     createUser,
     updateUser,
     loginUser,
+    logOut,
   };
   return (
     <AuthContext.Provider value={userInfo}>{children}</AuthContext.Provider>
