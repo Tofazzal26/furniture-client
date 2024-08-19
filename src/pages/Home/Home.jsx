@@ -7,6 +7,7 @@ import { Autoplay, Pagination } from "swiper/modules";
 import banner1 from "../../../public/slide1.png";
 import banner2 from "../../../public/slide2.png";
 import banner3 from "../../../public/slide3.png";
+import Blog from "../../Components/Blog/Blog";
 const Home = () => {
   return (
     <div>
@@ -93,6 +94,9 @@ const Home = () => {
             </SwiperSlide>
           </Swiper>
         </div>
+      </div>
+      <div>
+        <Blog />
       </div>
     </div>
   );
