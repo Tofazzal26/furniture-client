@@ -70,7 +70,14 @@ const Header = () => {
           </ul>
         </div>
         <div className="navbar-end">
-          <div className="dropdown dropdown-end">
+          <div>
+            <NavLink to="/login">
+              <button className="font-semibold bg-gray-200 py-2 rounded-md px-4">
+                Login
+              </button>
+            </NavLink>
+          </div>
+          <div className="dropdown dropdown-end hidden">
             <div
               tabIndex={0}
               role="button"
