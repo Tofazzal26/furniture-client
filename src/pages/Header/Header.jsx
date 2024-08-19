@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 const Header = () => {
   const navLinks = (
@@ -33,7 +33,7 @@ const Header = () => {
   );
 
   return (
-    <div className="bg-base-100">
+    <div className="bg-base-100 shadow-navbar">
       <div className="navbar container mx-auto">
         <div className="navbar-start">
           <div className="dropdown">
@@ -60,7 +60,9 @@ const Header = () => {
               {navLinks}
             </ul>
           </div>
-          <a className="btn btn-ghost text-2xl">Furniture</a>
+          <Link to="/">
+            <button className="btn btn-ghost text-2xl">Furniture</button>
+          </Link>
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1 font-semibold text-[17px]">
@@ -86,13 +88,7 @@ const Header = () => {
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
             >
               <li>
-                <a className="justify-between">
-                  Profile
-                  <span className="badge">New</span>
-                </a>
-              </li>
-              <li>
-                <a>Settings</a>
+                <a>Tofazzal Hossain</a>
               </li>
               <li>
                 <a>Logout</a>
