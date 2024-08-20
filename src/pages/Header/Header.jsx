@@ -3,10 +3,10 @@ import { Link, NavLink } from "react-router-dom";
 import { AuthContext } from "../../Components/AuthProvider/AuthProvider";
 
 const Header = () => {
-  const { user, logOut } = useContext(AuthContext);
+  const { user, UserLogOut } = useContext(AuthContext);
 
   const handleLogOut = () => {
-    logOut()
+    UserLogOut()
       .then((res) => {
         console.log(res);
       })
@@ -104,9 +104,7 @@ const Header = () => {
                   <a>{user?.displayName}</a>
                 </li>
                 <li>
-                  <a>
-                    <button onClick={handleLogOut}>Logout</button>
-                  </a>
+                  <button onClick={handleLogOut}>Logout</button>
                 </li>
               </ul>
             </div>
