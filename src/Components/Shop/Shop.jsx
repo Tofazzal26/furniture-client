@@ -1,24 +1,76 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { IoIosSearch } from "react-icons/io";
 import useAxiosSecure from "./../../Hook/AxiosSecure/useAxiosSecure";
 import ShopCard from "./ShopCard";
+import { useLoaderData } from "react-router-dom";
 const Shop = () => {
   const [startDate, setStartDate] = useState(new Date());
+  const [itemParPages, setItemParPages] = useState(3);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [Product, setProduct] = useState([]);
+
   const axiosSecure = useAxiosSecure();
-  const {
-    refetch,
-    isLoading,
-    data: Product = [],
-  } = useQuery({
-    queryKey: ["product"],
-    queryFn: async () => {
-      const res = await axiosSecure.get("/product", { withCredentials: true });
-      return res.data;
-    },
-  });
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const res = await axiosSecure.get(
+          `/product?page=${currentPage}&size=${itemParPages}`,
+          {
+            withCredentials: true,
+          }
+        );
+        setProduct(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchProduct();
+  }, [currentPage, itemParPages]);
+
+  // const {
+  //   refetch,
+  //   isLoading,
+  //   data: Product = [],
+  // } = useQuery({
+  //   queryKey: ["product"],
+  //   queryFn: async () => {
+  //     const res = await axiosSecure.get(
+  //       `/product?page=${currentPage}&size=${itemParPages}`,
+  //       { withCredentials: true }
+  //     );
+  //     return res.data;
+  //   },
+  // });
+
+  const { count } = useLoaderData();
+
+  const numberOfPages = Math.ceil(count / itemParPages);
+  const pages = [];
+  for (let i = 0; i < numberOfPages; i++) {
+    pages.push(i);
+  }
+
+  const handleChangePage = (e) => {
+    const val = parseInt(e.target.value);
+    setItemParPages(val);
+    setCurrentPage(0);
+  };
+
+  const handlePrev = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNext = (e) => {
+    if (currentPage < pages.length - 1) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
 
   return (
     <div className="mt-[100px]">
@@ -160,12 +212,43 @@ const Shop = () => {
                   <ShopCard product={product} key={idx} />
                 ))}
               </div>
-            </div>
-            {isLoading && (
-              <div className="my-[100px] flex justify-center items-center">
-                <div className="w-16 h-16 border-4 border-dashed rounded-full animate-spin dark:border-blue-600"></div>
+              <div className="text-center my-10 space-x-2">
+                <h2>Current Page {currentPage}</h2>
+                <button
+                  onClick={handlePrev}
+                  className="bg-gray-600 text-white px-4 p-2 rounded-md font-semibold"
+                >
+                  Prev
+                </button>
+                {pages.map((page) => (
+                  <button
+                    onClick={() => setCurrentPage(page)}
+                    className={`bg-gray-600 text-white px-4 p-2 rounded-md ${
+                      currentPage === page && "bg-orange-500"
+                    }`}
+                    key={page}
+                  >
+                    {page}
+                  </button>
+                ))}
+
+                <select
+                  className="border-2 px-4 py-[6px] rounded-md border-gray-500 font-semibold"
+                  value={itemParPages}
+                  onChange={handleChangePage}
+                >
+                  <option value="3">3</option>
+                  <option value="5">5</option>
+                  <option value="7">7</option>
+                </select>
+                <button
+                  onClick={handleNext}
+                  className="bg-gray-600 text-white px-4 p-2 rounded-md font-semibold"
+                >
+                  Next
+                </button>
               </div>
-            )}
+            </div>
           </div>
         </div>
       </div>
