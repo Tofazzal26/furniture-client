@@ -11,18 +11,19 @@ const Shop = () => {
   const [Product, setProduct] = useState([]);
   const [itemPerPage, setItemPerPage] = useState(3);
   const [currentPage, setCurrentPage] = useState(0);
+  const [priceRange, setPriceRange] = useState(0);
 
   const axiosSecure = useAxiosSecure();
 
   useEffect(() => {
     const furnitureData = async () => {
       const res = await axiosSecure.get(
-        `/product?page=${currentPage}&size=${itemPerPage}`
+        `/product?page=${currentPage}&size=${itemPerPage}&price=${priceRange}`
       );
       setProduct(res.data);
     };
     furnitureData();
-  }, [currentPage, itemPerPage]);
+  }, [currentPage, itemPerPage, priceRange]);
 
   const { count } = useLoaderData();
   const NumberOfPages = Math.ceil(count / itemPerPage);
@@ -54,6 +55,14 @@ const Shop = () => {
     }
   };
 
+  const handleCategory = (e) => {
+    e.preventDefault();
+    const price = e.target.price_range.value;
+    setPriceRange(parseInt(price));
+  };
+
+  console.log(priceRange);
+
   return (
     <div className="mt-[100px]">
       <div className="container mx-auto">
@@ -65,46 +74,8 @@ const Shop = () => {
               </h1>
               {/* product categories here */}
               <div>
-                <form>
+                <form onSubmit={handleCategory}>
                   <div className="mt-4">
-                    <select
-                      id="brand-name"
-                      name="brand_name"
-                      className="border-2 px-4 py-2 font-semibold text-[14px] rounded-lg"
-                    >
-                      <option value="">Select Brand</option>
-                      <option value="Samsung">Samsung</option>
-                      <option value="Apple">Apple</option>
-                      <option value="Sony">Sony</option>
-                      <option value="LG">LG</option>
-                      <option value="OnePlus">OnePlus</option>
-                      <option value="Google">Google</option>
-                      <option value="Xiaomi">Xiaomi</option>
-                      <option value="Huawei">Huawei</option>
-                      <option value="Nokia">Nokia</option>
-                      <option value="Motorola">Motorola</option>
-                      <option value="Panasonic">Panasonic</option>
-                      <option value="Toshiba">Toshiba</option>
-                      <option value="Philips">Philips</option>
-                      <option value="Sharp">Sharp</option>
-                      <option value="Vizio">Vizio</option>
-                      <option value="Hisense">Hisense</option>
-                      <option value="Roku">Roku</option>
-                      <option value="Dell">Dell</option>
-                      <option value="HP">HP</option>
-                      <option value="Lenovo">Lenovo</option>
-                      <option value="Asus">Asus</option>
-                      <option value="Microsoft">Microsoft</option>
-                      <option value="Canon">Canon</option>
-                      <option value="Nikon">Nikon</option>
-                      <option value="Fujifilm">Fujifilm</option>
-                      <option value="Olympus">Olympus</option>
-                      <option value="Leica">Leica</option>
-                      <option value="Pentax">Pentax</option>
-                      <option value="GoPro">GoPro</option>
-                      <option value="Kodak">Kodak</option>
-                    </select>
-
                     <select
                       id="price-range"
                       className="border-2 px-4 lg:ml-4 py-2 font-semibold text-[14px] rounded-lg"
@@ -115,17 +86,7 @@ const Shop = () => {
                       <option value="800">400$ - 800$</option>
                       <option value="400">100$ - 400$</option>
                     </select>
-                    <select
-                      id="category-name"
-                      className="border-2 px-4 py-2 font-semibold text-[14px] rounded-lg"
-                      name="category_name"
-                    >
-                      <option value="">Select Category</option>
-                      <option value="Smartphone">Smartphone</option>
-                      <option value="Television">Television</option>
-                      <option value="Laptop">Laptop</option>
-                      <option value="Camera">Camera</option>
-                    </select>
+
                     <button
                       type="submit"
                       className="bg-[#2d4d95] text-white mt-4 ml-4 font-semibold text-[14px] py-2 px-4 rounded-lg"
