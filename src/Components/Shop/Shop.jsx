@@ -12,18 +12,19 @@ const Shop = () => {
   const [itemPerPage, setItemPerPage] = useState(3);
   const [currentPage, setCurrentPage] = useState(0);
   const [priceRange, setPriceRange] = useState(0);
+  const [search, setSearch] = useState("");
 
   const axiosSecure = useAxiosSecure();
 
   useEffect(() => {
     const furnitureData = async () => {
       const res = await axiosSecure.get(
-        `/product?page=${currentPage}&size=${itemPerPage}&price=${priceRange}`
+        `/product?page=${currentPage}&size=${itemPerPage}&price=${priceRange}&search=${search}`
       );
       setProduct(res.data);
     };
     furnitureData();
-  }, [currentPage, itemPerPage, priceRange]);
+  }, [currentPage, itemPerPage, priceRange, search]);
 
   const { count } = useLoaderData();
   const NumberOfPages = Math.ceil(count / itemPerPage);
@@ -61,7 +62,10 @@ const Shop = () => {
     setPriceRange(parseInt(price));
   };
 
-  console.log(priceRange);
+  const handleSearch = (e) => {
+    const src = e.target.value;
+    setSearch(src);
+  };
 
   return (
     <div className="mt-[100px]">
@@ -140,6 +144,7 @@ const Shop = () => {
               </div>
               <div className="relative">
                 <input
+                  onChange={handleSearch}
                   type="text"
                   className="border-2  rounded-md outline-none text-[14px] font-interFont px-4 py-2 relative font-medium"
                   placeholder="Search"
