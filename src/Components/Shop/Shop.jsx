@@ -8,55 +8,37 @@ import ShopCard from "./ShopCard";
 import { useLoaderData } from "react-router-dom";
 const Shop = () => {
   const [startDate, setStartDate] = useState(new Date());
-  const [itemParPages, setItemParPages] = useState(3);
-  const [currentPage, setCurrentPage] = useState(0);
   const [Product, setProduct] = useState([]);
+  const [itemPerPage, setItemPerPage] = useState(3);
+  const [currentPage, setCurrentPage] = useState(0);
 
   const axiosSecure = useAxiosSecure();
 
   useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        const res = await axiosSecure.get(
-          `/product?page=${currentPage}&size=${itemParPages}`,
-          {
-            withCredentials: true,
-          }
-        );
-        setProduct(res.data);
-      } catch (error) {
-        console.log(error);
-      }
+    const furnitureData = async () => {
+      const res = await axiosSecure.get(
+        `/product?page=${currentPage}&size=${itemPerPage}`
+      );
+      setProduct(res.data);
     };
-    fetchProduct();
-  }, [currentPage, itemParPages]);
-
-  // const {
-  //   refetch,
-  //   isLoading,
-  //   data: Product = [],
-  // } = useQuery({
-  //   queryKey: ["product"],
-  //   queryFn: async () => {
-  //     const res = await axiosSecure.get(
-  //       `/product?page=${currentPage}&size=${itemParPages}`,
-  //       { withCredentials: true }
-  //     );
-  //     return res.data;
-  //   },
-  // });
+    furnitureData();
+  }, [currentPage, itemPerPage]);
 
   const { count } = useLoaderData();
-
-  const numberOfPages = Math.ceil(count / itemParPages);
+  const NumberOfPages = Math.ceil(count / itemPerPage);
   const pages = [];
-  for (let i = 0; i < numberOfPages; i++) {
-    pages.push(i);
+
+  for (let index = 0; index < NumberOfPages; index++) {
+    pages.push(index);
   }
 
-  const handleChangePage = (e) => {
+  const handlePageChange = (e) => {
+    setCurrentPage(e);
+  };
+
+  const handleFilter = (e) => {
     const val = parseInt(e.target.value);
-    setItemParPages(val);
+    setItemPerPage(val);
     setCurrentPage(0);
   };
 
@@ -66,7 +48,7 @@ const Shop = () => {
     }
   };
 
-  const handleNext = (e) => {
+  const handleNext = () => {
     if (currentPage < pages.length - 1) {
       setCurrentPage(currentPage + 1);
     }
@@ -212,30 +194,28 @@ const Shop = () => {
                   <ShopCard product={product} key={idx} />
                 ))}
               </div>
-              <div className="text-center my-10 space-x-2">
-                <h2>Current Page {currentPage}</h2>
+              <div className="my-8 text-center space-x-2">
                 <button
                   onClick={handlePrev}
-                  className="bg-gray-600 text-white px-4 p-2 rounded-md font-semibold"
+                  className={`bg-gray-500 text-white font-semibold px-4 py-2 rounded-md`}
                 >
                   Prev
                 </button>
-                {pages.map((page) => (
+                {pages.map((page, idx) => (
                   <button
-                    onClick={() => setCurrentPage(page)}
-                    className={`bg-gray-600 text-white px-4 p-2 rounded-md ${
+                    key={idx}
+                    onClick={() => handlePageChange(page)}
+                    className={`bg-gray-500 text-white font-semibold px-4 py-2 rounded-md ${
                       currentPage === page && "bg-orange-500"
                     }`}
-                    key={page}
                   >
                     {page}
                   </button>
                 ))}
-
                 <select
-                  className="border-2 px-4 py-[6px] rounded-md border-gray-500 font-semibold"
-                  value={itemParPages}
-                  onChange={handleChangePage}
+                  className="border-2 border-gray-500 rounded-md py-[6px] px-2 font-semibold"
+                  value={itemPerPage}
+                  onChange={handleFilter}
                 >
                   <option value="3">3</option>
                   <option value="5">5</option>
@@ -243,7 +223,7 @@ const Shop = () => {
                 </select>
                 <button
                   onClick={handleNext}
-                  className="bg-gray-600 text-white px-4 p-2 rounded-md font-semibold"
+                  className="bg-gray-500 text-white font-semibold px-4 py-2 rounded-md"
                 >
                   Next
                 </button>
