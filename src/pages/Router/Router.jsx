@@ -5,6 +5,7 @@ import Shop from "./../../Components/Shop/Shop";
 import Login from "../Login/Login";
 import Register from "../Register/Register";
 import AddProduct from "../AddProduct/AddProduct";
+import UserProduct from "../UserProduct/UserProduct";
 
 const Router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const Router = createBrowserRouter([
       {
         path: "/addProduct",
         element: <AddProduct />,
+      },
+      {
+        path: "/userProduct",
+        element: <UserProduct />,
       },
       {
         path: "/login",

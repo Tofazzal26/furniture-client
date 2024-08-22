@@ -109,6 +109,11 @@ const Header = () => {
                   </a>
                 </li>
                 <li>
+                  <a>
+                    <NavLink to="/userProduct">My Product</NavLink>
+                  </a>
+                </li>
+                <li>
                   <button className="text-red-500" onClick={handleLogOut}>
                     Logout
                   </button>
