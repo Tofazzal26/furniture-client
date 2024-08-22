@@ -4,6 +4,7 @@ import Home from "../Home/Home";
 import Shop from "./../../Components/Shop/Shop";
 import Login from "../Login/Login";
 import Register from "../Register/Register";
+import AddProduct from "../AddProduct/AddProduct";
 
 const Router = createBrowserRouter([
   {
@@ -18,6 +19,10 @@ const Router = createBrowserRouter([
         path: "/shop",
         element: <Shop />,
         loader: () => fetch("http://localhost:3000/productCount"),
+      },
+      {
+        path: "/addProduct",
+        element: <AddProduct />,
       },
       {
         path: "/login",
